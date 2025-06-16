@@ -1,0 +1,25 @@
+# Archivos de compilación
+*.o
+*.obj
+*.exe
+*.out
+
+# Archivos de dependencias de Code::Blocks
+*.depend
+*.layout
+
+# Carpetas generadas por Code::Blocks u otros IDEs
+/bin/
+/obj/
+
+# Librerías externas
+/SDL2/
+/libs/
+
+# Archivos de backup o temporales
+*~
+*.swp
+.DS_Store
+
+# Archivos generados por el sistema
+Thumbs.db
