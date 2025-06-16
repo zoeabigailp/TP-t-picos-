@@ -12,10 +12,6 @@
 /bin/
 /obj/
 
-# Librerías externas
-/SDL2/
-/libs/
-
 # Archivos de backup o temporales
 *~
 *.swp
