@@ -21,8 +21,8 @@ void inicializarTablero(int **tablero, unsigned int fila, unsigned int columna, 
     case 1: //Planeador - Glider
         if(fila >= 3 && columna >=3)
         {
-           int x = cx-1;
-           int y = cy-1;
+            int x = cx-1;
+            int y = cy-1;
 
             tablero[x][y] = LIVE;
             tablero[x][y + 1] = LIVE;
@@ -96,16 +96,110 @@ void inicializarTablero(int **tablero, unsigned int fila, unsigned int columna, 
             tablero[x+3][y+35] = LIVE;
             tablero[x+3][y+36] = LIVE;
         }
-        else{
+        else
+        {
             printf("\nEl tablero es muy pequeño para el canon planeador.");
 
-             /* Usamos de nuevo el patrón 1 */
+            /* Usamos de nuevo el patrón 1 por si el tablero e muy chico */
             int x = cx - 1, y = cy - 1;
             tablero[x  ][y  ] = LIVE;
             tablero[x  ][y+1] = LIVE;
             tablero[x+1][y+1] = LIVE;
             tablero[x+2][y+1] = LIVE;
             tablero[x+1][y+2] = LIVE;
+        }
+        break;
+    case 4: //Pulsar
+        if(fila >= 15 && columna >=15)
+        {
+            int x = (fila - 15) / 2;
+            int y = (columna - 15) / 2;
+
+            // Fila 1
+            tablero[x+1][y+3] = LIVE;
+            tablero[x+1][y+4] = LIVE;
+            tablero[x+1][y+5] = LIVE;
+            tablero[x+1][y+9] = LIVE;
+            tablero[x+1][y+10] = LIVE;
+            tablero[x+1][y+11] = LIVE;
+
+            // Fila 3
+            tablero[x+3][y+1] = LIVE;
+            tablero[x+3][y+6] = LIVE;
+            tablero[x+3][y+8] = LIVE;
+            tablero[x+3][y+13] = LIVE;
+
+            // Fila 4
+            tablero[x+4][y+1] = LIVE;
+            tablero[x+4][y+6] = LIVE;
+            tablero[x+4][y+8] = LIVE;
+            tablero[x+4][y+13] = LIVE;
+
+            // Fila 5
+            tablero[x+5][y+1] = LIVE;
+            tablero[x+5][y+6] = LIVE;
+            tablero[x+5][y+8] = LIVE;
+            tablero[x+5][y+13] = LIVE;
+
+            // Fila 6
+            tablero[x+6][y+3] = LIVE;
+            tablero[x+6][y+4] = LIVE;
+            tablero[x+6][y+5] = LIVE;
+            tablero[x+6][y+9] = LIVE;
+            tablero[x+6][y+10] = LIVE;
+            tablero[x+6][y+11] = LIVE;
+
+            // Fila 8
+            tablero[x+8][y+3] = LIVE;
+            tablero[x+8][y+4] = LIVE;
+            tablero[x+8][y+5] = LIVE;
+            tablero[x+8][y+9] = LIVE;
+            tablero[x+8][y+10] = LIVE;
+            tablero[x+8][y+11] = LIVE;
+
+            // Fila 9
+            tablero[x+9][y+1] = LIVE;
+            tablero[x+9][y+6] = LIVE;
+            tablero[x+9][y+8] = LIVE;
+            tablero[x+9][y+13] = LIVE;
+
+            // Fila 10
+            tablero[x+10][y+1] = LIVE;
+            tablero[x+10][y+6] = LIVE;
+            tablero[x+10][y+8] = LIVE;
+            tablero[x+10][y+13] = LIVE;
+
+            // Fila 11
+            tablero[x+11][y+1] = LIVE;
+            tablero[x+11][y+6] = LIVE;
+            tablero[x+11][y+8] = LIVE;
+            tablero[x+11][y+13] = LIVE;
+
+            // Fila 13
+            tablero[x+13][y+3] = LIVE;
+            tablero[x+13][y+4] = LIVE;
+            tablero[x+13][y+5] = LIVE;
+            tablero[x+13][y+9] = LIVE;
+            tablero[x+13][y+10] = LIVE;
+            tablero[x+13][y+11] = LIVE;
+        }
+        else  //Beacon en caso de que sea muy chico el tablero, igual el minimo es 15 filas y columnas
+        {
+            int x = cx - 2;
+            int y = cy - 2;
+
+
+            printf("\nEl tablero es muy pequeño para el patron Pulsar.");
+
+            tablero[x][y]     = LIVE;
+            tablero[x][y+1]   = LIVE;
+            tablero[x+1][y]   = LIVE;
+            tablero[x+1][y+1] = LIVE;
+
+            tablero[x+2][y+2] = LIVE;
+            tablero[x+2][y+3] = LIVE;
+            tablero[x+3][y+2] = LIVE;
+            tablero[x+3][y+3] = LIVE;
         }
         break;
 
@@ -323,9 +417,10 @@ void configurarTablero(int * config)
     printf("\n1.Planeador/Glider");
     printf("\n2.Sapo");
     printf("\n3.Canon de planeadores");
-    printf("\nSeleccione el patron a utilizar [1-3]:");
+    printf("\n4.Pulsar");
+    printf("\nSeleccione el patron a utilizar [1-4]:");
     scanf("%d", config);
-    while(*config < 1 || *config >3)
+    while(*config < 1 || *config >4)
     {
         printf("\nElegi un patron valido:");
         scanf("%d", config);
@@ -397,26 +492,29 @@ void drawSquare(SDL_Renderer * renderer, unsigned int posX, unsigned int posY)
 * @return EXITO si la imagen se muestra correctamente
 * @return SDL_ERROR - WINDOW_ERROR en caso de error
 */
-int mostrarIntro(const char * img){
+int mostrarIntro(const char * img)
+{
     // Creo una ventana para poder mostrar la imagen
-  SDL_Window * win = SDL_CreateWindow(
-        "Conway - Intro",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        800, 400, SDL_WINDOW_SHOWN);
+    SDL_Window * win = SDL_CreateWindow(
+                           "Conway - Intro",
+                           SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                           800, 400, SDL_WINDOW_SHOWN);
 
     //Valido que se crea bien la ventana
     if (!win) return WINDOW_ERROR;
 
     //Creo y valido el renderer
     SDL_Renderer * ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-    if (!ren) {
+    if (!ren)
+    {
         SDL_DestroyWindow(win);
         return SDL_ERROR;
     }
 
     //Cargo la imagen y valido
     SDL_Surface * surf = SDL_LoadBMP(img);
-    if (!surf) {
+    if (!surf)
+    {
         SDL_DestroyRenderer(ren);
         SDL_DestroyWindow(win);
         return SDL_ERROR;
@@ -426,7 +524,8 @@ int mostrarIntro(const char * img){
     SDL_Texture * tex = SDL_CreateTextureFromSurface(ren, surf);
     SDL_FreeSurface(surf);
 
-    if (!tex) {
+    if (!tex)
+    {
         SDL_DestroyRenderer(ren);
         SDL_DestroyWindow(win);
         return SDL_ERROR;
@@ -442,8 +541,10 @@ int mostrarIntro(const char * img){
     int loop = 1;
 
     //Bucle que dura hasta 2000ms (2seg) y valida eventos
-    while (loop && SDL_GetTicks() - start < 2000) {
-        while (SDL_PollEvent(&ev)) {
+    while (loop && SDL_GetTicks() - start < 2000)
+    {
+        while (SDL_PollEvent(&ev))
+        {
             if (ev.type == SDL_QUIT || ev.type == SDL_KEYDOWN) loop = 0;
         }
     }
@@ -458,7 +559,8 @@ int mostrarIntro(const char * img){
 /**
 * Funcion principal donde se ejecuta el Juego - Conway
 */
-int juego(){
+int juego()
+{
 
     ///Inicializar variables
     unsigned char done;
@@ -476,7 +578,8 @@ int juego(){
         return SDL_ERROR;
     }
 
-        if(mostrarIntro("conway.bmp") != EXITO){
+    if(mostrarIntro("conway.bmp") != EXITO)
+    {
         SDL_Quit();
         return SDL_ERROR;
     }
